@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  LOADING_STATE,
-  loadingState,
-  uploadMovies,
-} from "./movies/movie-slice";
+import { fetchMovies } from "./movies/movie-slice";
 
 import "./App.css";
 
 function App() {
-  const [movies, setMovies] = useState(null);
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state.movies);
@@ -19,16 +14,7 @@ function App() {
   }, [state, dispatch]);
 
   useEffect(() => {
-    dispatch(loadingState(LOADING_STATE.REQUESTED));
-    fetch("https://swapi.dev/api/films")
-      .then((res) => res.json())
-      .then((data) => {
-        data.results.forEach((el) => {
-          dispatch(uploadMovies(el));
-        });
-        dispatch(loadingState(LOADING_STATE.DONE));
-      })
-      .catch((err) => dispatch(LOADING_STATE.ERROR));
+    dispatch(fetchMovies());
   }, [dispatch]);
 
   return <div className="App"></div>;

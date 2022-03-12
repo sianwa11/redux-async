@@ -22,6 +22,22 @@ export const movieSlice = createSlice({
   },
 });
 
+// Thunk function
+export const fetchMovies = () => {
+  return (dispatch, getState) => {
+    dispatch(loadingState(LOADING_STATE.REQUESTED));
+    return fetch("https://swapi.dev/api/films")
+      .then((res) => res.json())
+      .then((data) => {
+        data.results.forEach((el) => {
+          dispatch(uploadMovies(el));
+        });
+        dispatch(loadingState(LOADING_STATE.DONE));
+      })
+      .catch((err) => dispatch(LOADING_STATE.ERROR));
+  };
+};
+
 export const { uploadMovies, loadingState } = movieSlice.actions;
 
 export default movieSlice.reducer;
