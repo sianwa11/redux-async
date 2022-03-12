@@ -7,8 +7,10 @@ export const LOADING_STATE = {
   DONE: "done",
 };
 
+const initialState = { film: [], status: LOADING_STATE.WAITING };
+
 export const movieSlice = createSlice({
-  initialState: { film: [], status: LOADING_STATE.WAITING },
+  initialState,
   name: "movies",
   reducers: {
     uploadMovies(state, action) {
